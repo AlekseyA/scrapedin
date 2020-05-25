@@ -38,20 +38,9 @@ module.exports = async (browser, cookies, url, waitTimeToScrapMs = 500, hasToGet
   const contact = hasToGetContactInfo ? await contactInfo(page) : {}
   const [profileLegacy] = await scrapSection(page, template.profileLegacy)
   const [profileAlternative] = await scrapSection(page, template.profileAlternative)
-  const [aboutLegacy] = await scrapSection(page, template.aboutLegacy)
-  const [aboutAlternative] = await scrapSection(page, template.aboutAlternative)
   const positions = await scrapSection(page, template.positions)
   const educations = await scrapSection(page, template.educations)
-  const [recommendationsCount] = await scrapSection(page, template.recommendationsCount)
-  const recommendationsReceived = await scrapSection(page, template.recommendationsReceived)
-  const recommendationsGiven = await scrapSection(page, template.recommendationsGiven)
   const skills = await scrapSection(page, template.skills)
-  const accomplishments = await scrapSection(page, template.accomplishments)
-  const courses = await scrapAccomplishmentPanel(page, 'courses')
-  const languages = await scrapAccomplishmentPanel(page, 'languages')
-  const projects = await scrapAccomplishmentPanel(page, 'projects')
-  const volunteerExperience = await scrapSection(page, template.volunteerExperience)
-  const peopleAlsoViewed = await scrapSection(page, template.peopleAlsoViewed)
 
   await page.close()
   logger.info(`finished scraping url: ${url}`)
@@ -60,23 +49,9 @@ module.exports = async (browser, cookies, url, waitTimeToScrapMs = 500, hasToGet
     contact,
     profileLegacy,
     profileAlternative,
-    aboutLegacy,
-    aboutAlternative,
     positions,
     educations,
     skills,
-    recommendations: {
-      givenCount: recommendationsCount ? recommendationsCount.given : "0",
-      receivedCount: recommendationsCount ? recommendationsCount.received : "0",
-      given: recommendationsReceived,
-      received: recommendationsGiven
-    },
-    accomplishments,
-    courses,
-    languages,
-    projects,
-    peopleAlsoViewed,
-    volunteerExperience
   }
 
   const cleanedProfile = cleanProfileData(rawProfile)
